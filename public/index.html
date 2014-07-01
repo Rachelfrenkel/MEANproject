@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<base href="/">
+
+	<!-- JS -->
+	<!-- imported scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.js"></script>
+	<!-- my scripts -->
+	<script src="javascripts/mainAppDepends.js"></script>
+	<script src="javascripts/viewRoutesSetUp.js"></script>
+	<script src="javascripts/controllers/createAccController.js"></script>
+	<script src="javascripts/controllers/homeController.js"></script>
+	<script src="javascripts/controllers/loginController.js"></script>
+	<script src="javascripts/controllers/profileController.js"></script>
+
+</head>
+
+<body ng-app="mainApp">
+	<div> 
+		<li><a href="/login">LOGIN</a></li>
+		<li><a href="/createacc">CREATE ACCOUNT</a></li>
+	</div>
+	<!-- ANGULAR DYNAMIC CONTENT -->
+	<div ng-view></div>
+<body>
+</html>
+
