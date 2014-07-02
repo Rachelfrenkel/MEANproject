@@ -12,7 +12,6 @@ var mongoStore = require('connect-mongo')(session);
 
 // set up the database =====================
 var db = mongoose.connect('mongodb://localhost/musicSchoolDB');
-console.log(db.databaseName);
 
 app.use(express.static(__dirname + '/public')); // set up the app to use HTML as view engine
 

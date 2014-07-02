@@ -50,6 +50,7 @@ exports.create = function(req, res) {
     var User = mongoose.model("User");
 
     var user = new User(req.body);
+    console.log(user);
     user.save(function(err) {
         if (err) {
             console.log('user creation failed');
@@ -57,7 +58,7 @@ exports.create = function(req, res) {
             res.send(500);
         } else {
             console.log('user account was created!');
-            req.session.user_id = user.name;
+            req.session.username = user.name;
           //  res.redirect('/profile');
             res.jsonp(user);
         }
@@ -73,12 +74,13 @@ exports.login = function(req, res) {
 	console.log('user = ' + username);
 	console.log('pw = ' + userpassword);
 	var newuser = new User(req.body);
+
 	User.findOne({name: username, password: userpassword}, function(err, match) {
 		if(match) {
 			console.log("user and password match");
-			res.send(200);
 			//res.jsonp(newuser);
-			//req.session.name = username;
+			req.session.username = req.body.name;
+			res.send(200);
 		}
 		else {
 			console.log("failed login");
