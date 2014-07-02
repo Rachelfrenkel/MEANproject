@@ -1,5 +1,9 @@
 <div>
 	<h1>Home Page</h1>
-
-	<p>{{ tagline }}</p>
+</div>
+<div>
+	<p> Your WeShare username: <strong> {{currentUser}} </strong></p>
+	<h2> Other users </h2>
+<div ng-repeat="user in allUsers">
+	WeShare user #{{$index+1}}: <u>{{user.name}}</u><br><br>
 </div>

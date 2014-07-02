@@ -7,22 +7,20 @@ function loadUser(req, res, next) {
 	console.log('request username = ' + req.session.username); // this is currently UNDEFINED FIX THIS
 
 	if (req.session.username) {
-		console.log('hi one');
 		User.find({name: req.session.username}, function(err, match) {
 			if (match) {
-				console.log("hi two");
 				req.currentUser = match;
 				console.log("loading user after assignment to request: " + req.currentUser);
 				next();
 			}
 			if (err) {
 				console.log('error finding the session user!');
-				res.redirect('/login');
+				res.redirect('/home');
 			}
 		});
 	} else {
 		console.log("apparently req.session.username is false..");
-		res.redirect('/login'); // not sure if this will redirect relative to the url where request was issued
+		res.redirect('/home'); // not sure if this will redirect relative to the url where request was issued
 	}
 }
 
@@ -30,7 +28,7 @@ module.exports = function(app) {
 	/* GET home page. */
 	app.route('/login')
 		.get(function(req, res) {
-			
+			res.sendfile('./public/index.html');
 		})
 		.post(UserModel.login);
 
@@ -51,7 +49,8 @@ module.exports = function(app) {
 		.all(loadUser)
 		.get(function(req, res) {
 			console.log("the current user obj from calling get on profile: " + req.currentUser);
-			res.send({user: req.currentUser});
+			res.jsonp(req.currentUser);
+			res.sendfile("./public/index.html");
 		});
 
 	app.route('/logout')
@@ -65,6 +64,17 @@ module.exports = function(app) {
 				console.log("No session exists...");
 			}
 		});
+
+	app.route('/home')
+		.get(UserModel.getAll);
+
+	app.route('*')
+		.get(function(req, res) {
+		console.log('called here');
+		// console.log('CSRF request csrfTokenn = ' + req.csrfToken());
+		res.sendfile('./public/index.html'); // load our public/index.html file
+	});
+
 }
 
 

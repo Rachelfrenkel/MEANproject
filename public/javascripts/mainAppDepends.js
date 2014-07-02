@@ -4,5 +4,6 @@ angular.module('mainApp', [
 	'createAccController',
 	'homeController',
 	'loginController',
-	'profileController'
+	'profileController',
+	'logoutController',
 	]);

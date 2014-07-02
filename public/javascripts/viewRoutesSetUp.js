@@ -9,7 +9,11 @@ angular.module('viewRoutesSetUp',[])
 			controller: 'homeController'
 		});
 
-		//nerds index page
+		// home page
+		$routeProvider.when('/home', {
+			templateUrl: '/views/home.html',
+			controller: 'homeController'
+		});
 		$routeProvider.when('/login', {
 			templateUrl: 'views/login.html',
 			controller: 'loginController'
@@ -23,6 +27,11 @@ angular.module('viewRoutesSetUp',[])
 		$routeProvider.when('/profile', {
 			templateUrl: "views/profile.html",
 			controller: "profileController"
+		});
+
+		$routeProvider.when('/logout', {
+			templateUrl: "views/logout.html",
+			controller: "logoutController"
 		});
 	$locationProvider.html5Mode(true);
 }]);

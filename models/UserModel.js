@@ -89,3 +89,54 @@ exports.login = function(req, res) {
 	});
 };
 
+exports.getAll = function(req, res) {
+	console.log("Getting all users to display on home page.");
+	var User = mongoose.model('User');
+	if (req.session.username) {
+		console.log("This is the username: "+ req.session.username);
+		console.log("This is the current user: " + req.currentUser);
+
+		// find all other users first
+		User.find({name: {$ne: req.session.username}}, function test(err, users) {
+			if (err) {
+				throw(err);
+			} else {
+				// now find all other users
+				var currentUser;
+				User.findOne({name: req.session.username}, function(err, match) {
+					if (match) {
+						currentUser = match;
+						
+						var all = {
+							current: currentUser,
+							allOthers: users
+						};
+						
+						res.jsonp(all);
+						console.log({current: "currentUser"}, {allOthers: users});	
+					}  else {
+						currentUser = null;
+						var all = {
+							current: currentUser,
+							allOthers: users
+						};
+						
+						res.jsonp(all);
+						console.log({current: "currentUser"}, {allOther: users});	
+						console.log("There is no current user.");
+					}
+				});
+			}
+		});
+	} else {
+		User.find({}, function test(err, users) {
+			if (err) {
+				throw(err);
+			} else {
+				res.jsonp(users);
+				console.log(res);
+			}
+		});
+	}
+};
+
