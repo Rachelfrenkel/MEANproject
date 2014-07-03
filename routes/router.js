@@ -25,6 +25,7 @@ function loadUser(req, res, next) {
 }
 
 module.exports = function(app) {
+	
 	/* GET home page. */
 	app.route('/login')
 		.get(function(req, res) {
@@ -33,9 +34,7 @@ module.exports = function(app) {
 		.post(UserModel.login);
 
 	app.route('/')
-		.get(function(req, res) {
-		//res.send('<h1>This is the home page</h1>');
-		});
+		.get(UserModel.getAll);
 
 	app.route('/createacc')
 		.get(function(req, res) {
@@ -48,21 +47,14 @@ module.exports = function(app) {
 	app.route('/profile')
 		.all(loadUser)
 		.get(function(req, res) {
-			console.log("the current user obj from calling get on profile: " + req.currentUser);
 			res.jsonp(req.currentUser);
 			res.sendfile("./public/index.html");
 		});
 
 	app.route('/logout')
 		.get(function(req, res) {
-			console.log("logging out");
-			if (req.session) {
-				req.session.destroy(function(err) {
-					console.log("failed to destroy session.");
-				});
-			} else {
-				console.log("No session exists...");
-			}
+			UserModel.logout(req, res);
+			res.sendfile("./public/index.html");
 		});
 
 	app.route('/home')
@@ -70,10 +62,15 @@ module.exports = function(app) {
 
 	app.route('*')
 		.get(function(req, res) {
-		console.log('called here');
-		// console.log('CSRF request csrfTokenn = ' + req.csrfToken());
-		res.sendfile('./public/index.html'); // load our public/index.html file
-	});
+			console.log('called here');
+			// console.log('CSRF request csrfTokenn = ' + req.csrfToken());
+			res.sendfile('./public/index.html'); // load our public/index.html file
+		});
+
+	app.route('/admin')
+		.get(function(res, req) {
+			res.sendfile("./public/index.html");
+		})
 
 }
 

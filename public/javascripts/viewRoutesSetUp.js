@@ -33,5 +33,11 @@ angular.module('viewRoutesSetUp',[])
 			templateUrl: "views/logout.html",
 			controller: "logoutController"
 		});
+
+		$routeProvider.when('/admin', {
+			templateUrl: "views/admin.html",
+			controller: "adminController"
+		});
+		
 	$locationProvider.html5Mode(true);
 }]);

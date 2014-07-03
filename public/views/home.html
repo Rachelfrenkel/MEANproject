@@ -1,9 +1,12 @@
+<li ng-show="userSeshExists"><a href="/logout" target="_self">LOG OUT</a></li>
+<li ng-show="userSeshExists"><a href="/profile">PROFILE PAGE</a></li>
+<li ng-show="!userSeshExists"><a href="/createacc">CREATE ACCOUNT</a></li>
 <div>
 	<h1>Home Page</h1>
 </div>
 <div>
-	<p> Your WeShare username: <strong> {{currentUser}} </strong></p>
-	<h2> Other users </h2>
+	<p ng-show="userSeshExists"> Your WeShare username: <strong> {{currentUser}} </strong></p>
+	<h2> Other WeShare users </h2>
 <div ng-repeat="user in allUsers">
-	WeShare user #{{$index+1}}: <u>{{user.name}}</u><br><br>
+	WeShare user #{{$index+1}}: <u>{{user}}</u><br><br>
 </div>

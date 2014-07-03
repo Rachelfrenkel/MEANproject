@@ -1,15 +1,16 @@
-angular.module('profileController', []).controller("profileController", function($scope, $http) {
+angular.module('profileController', []).controller("profileController", function($scope, $http, $rootScope) {
+	$rootScope.showLogout = true;
 	$scope.tagline = "Welcome to your profile page";
-	// $scope.displayProfile = function() {
-	// 	$http.get('/profile').then(function(response) {
-	// 		$scope.tagline = response.data;
-	// 		console.log('user object: ' + angular.toJson(response.data));
-	// 		console.log(response.data[0]);
-	// 	});
-	// };d
 	$http.get('/profile').then(function(response) {
 		console.log(response.data[0].name);
 		//console.log(response.data);
 		$scope.username = response.data[0].name;
 	});
+
+	// logout function
+	$scope.terminateSesh = function() {
+		console.log("executed termination");
+		$http.get('/logout');
+	};
+
 });

@@ -80,13 +80,34 @@ exports.login = function(req, res) {
 			console.log("user and password match");
 			//res.jsonp(newuser);
 			req.session.username = req.body.name;
-			res.send(200);
+			//res.jsonp({username: req.body.name});
+			res.send(req.body.name);
 		}
 		else {
 			console.log("failed login");
 			res.send(500);
 		}
 	});
+};
+
+exports.logout = function(req, res) {
+	console.log("logging out from express side UserModel.js");
+	if (req.session) {
+		req.session.destroy(function(err) {
+			if (err) {
+				console.log("failed to destroy session.");
+			} else {
+				console.log("successfully destroyed session.");
+			}
+		});
+	} else {
+		console.log("No session exists... and yet you tried to logout.");
+	}
+};
+
+// create secure json object where we don't show anything but usernames
+function pullName(userObj) {
+	return userObj.name;
 };
 
 exports.getAll = function(req, res) {
@@ -105,25 +126,23 @@ exports.getAll = function(req, res) {
 				var currentUser;
 				User.findOne({name: req.session.username}, function(err, match) {
 					if (match) {
-						currentUser = match;
-						
-						var all = {
-							current: currentUser,
-							allOthers: users
+						var otherNames = users.map(pullName);
+						var allNames = {
+							current: req.session.username,
+							otherNames: otherNames
 						};
+						console.log("The allNames var: %j", allNames);
 						
-						res.jsonp(all);
-						console.log({current: "currentUser"}, {allOthers: users});	
+						res.jsonp(allNames);
 					}  else {
-						currentUser = null;
-						var all = {
-							current: currentUser,
-							allOthers: users
+						var otherNames = users.map(pullName);
+						var allNames = {
+							current: null,
+							otherNames: otherNames
 						};
 						
-						res.jsonp(all);
-						console.log({current: "currentUser"}, {allOther: users});	
-						console.log("There is no current user.");
+						res.jsonp(allNames);
+						console.log("Something terribly wrong, user session exists but cannot find user in db.");
 					}
 				});
 			}
@@ -133,7 +152,12 @@ exports.getAll = function(req, res) {
 			if (err) {
 				throw(err);
 			} else {
-				res.jsonp(users);
+				var otherNames = users.map(pullName);
+				var allNames = {
+					current: null,
+					otherNames: otherNames
+				};
+				res.jsonp(allNames);
 				console.log(res);
 			}
 		});

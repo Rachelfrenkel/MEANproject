@@ -1,5 +1,8 @@
 angular.module("logoutController", []).controller("logoutController", function($scope, $http) {
 	$scope.tagline = "goodbye!";
-	$http.get('/logout');
-	$location.path("/home");
+
+	$scope.logout = function() {
+		console.log("called logout from angular side");
+		$http.get('/logout');
+	};
 });

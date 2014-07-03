@@ -6,4 +6,5 @@ angular.module('mainApp', [
 	'loginController',
 	'profileController',
 	'logoutController',
+	'adminController'
 	]);

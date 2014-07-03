@@ -14,7 +14,13 @@ angular.module("loginController", []).controller("loginController", function($sc
 		$http.post('/login', userCreds).then(function(response) {
 			console.log('successful login');
 				$scope.tagline = "successful login";
-				$location.path("/profile");
+				// check to see if admin is logged in
+				console.log("this is the username coming from the login controller: " + angular.toJson(response.data));
+				if (response.data == "admin") {
+					$location.path("/admin");
+				} else {
+					$location.path("/profile");
+				}
 				//sessionService.sessID = name; // set the session id
 			} , 
 			function(response) {
@@ -24,6 +30,8 @@ angular.module("loginController", []).controller("loginController", function($sc
 			}
 		);
 	};
+
+	$http.get("login");
 });
 
 
