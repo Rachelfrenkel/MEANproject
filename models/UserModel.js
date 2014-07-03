@@ -158,7 +158,7 @@ exports.getAll = function(req, res) {
 					otherNames: otherNames
 				};
 				res.jsonp(allNames);
-				console.log(res);
+				return otherNames;
 			}
 		});
 	}

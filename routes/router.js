@@ -20,7 +20,8 @@ function loadUser(req, res, next) {
 		});
 	} else {
 		console.log("apparently req.session.username is false..");
-		res.redirect('/home'); // not sure if this will redirect relative to the url where request was issued
+		res.status(401); // user session does not exist, unauthorized to view page
+		//res.redirect('/home');
 	}
 }
 
@@ -60,17 +61,18 @@ module.exports = function(app) {
 	app.route('/home')
 		.get(UserModel.getAll);
 
-	app.route('*')
-		.get(function(req, res) {
-			console.log('called here');
-			// console.log('CSRF request csrfTokenn = ' + req.csrfToken());
-			res.sendfile('./public/index.html'); // load our public/index.html file
-		});
+	// app.route('*')
+	// 	.get(function(req, res) {
+	// 		// console.log('CSRF request csrfTokenn = ' + req.csrfToken());
+	// 		res.sendfile('./public/index.html'); // load our public/index.html file
+	// 	});
 
 	app.route('/admin')
+		.all(loadUser)
 		.get(function(res, req) {
-			res.sendfile("./public/index.html");
-		})
+			
+			//res.sendfile("./public/index.html");
+		});
 
 }
 
